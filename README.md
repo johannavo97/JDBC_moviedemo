@@ -12,3 +12,6 @@ In the task, focus on the correct use of the JDBC API. All queries can be made d
 Use a single connection to execute all queries. However, remember to use try-with-resources when opening a 
 connection and creating objects such asStatement or PreparedStatement. Also, don't worry about exception
 handling in this task (in case of error, display stacktrace).
+
+
+https://homeworks.java.en.sdacademy.pro/jdbc_hibernate/jdbc_exercises/
