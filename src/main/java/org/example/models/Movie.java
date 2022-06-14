@@ -1,59 +1,33 @@
 package org.example.models;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+@Entity(name = "movies")
+@Data
+@NoArgsConstructor
+@RequiredArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = "actors")
+@ToString(exclude = "actors")
 public class Movie {
-    private int id;
+    @Id
+    @GeneratedValue
+    private UUID id;
+
+    @Column(name = "title")
     private String title;
-    private String genre;
+
+    @ManyToOne
+    private Genre genre;
+
+    @Column(name = "year_of_release")
     private int yearOfRelease;
 
-    public Movie(String title, String genre, int yearOfRelease) {
-        this.title = title;
-        this.genre = genre;
-        this.yearOfRelease = yearOfRelease;
-    }
-
-    public Movie() {
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
-    public int getYearOfRelease() {
-        return yearOfRelease;
-    }
-
-    public void setYearOfRelease(int yearOfRelease) {
-        this.yearOfRelease = yearOfRelease;
-    }
-
-    @Override
-    public String toString() {
-        return "Movie{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", genre='" + genre + '\'' +
-                ", yearOfRelease=" + yearOfRelease +
-                '}';
-    }
+    @ManyToMany(mappedBy = "movies")
+    private List<Actor> actors = new ArrayList<>();
 }
