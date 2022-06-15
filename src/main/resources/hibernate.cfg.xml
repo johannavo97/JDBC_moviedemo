@@ -34,6 +34,9 @@
         <!-- each session runs in a thread (thread-safe) -->
         <property name="current_session_context_class">thread</property>
         <!-- Mapping models -->
+
         <mapping class="org.example.models.Movie"/>
+        <mapping class="org.example.models.Actor"/>
+        <mapping class="org.example.models.Genre"/>
     </session-factory>
 </hibernate-configuration>

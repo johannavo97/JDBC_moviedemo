@@ -10,7 +10,6 @@ import java.util.UUID;
 @Entity(name = "movies")
 @Data
 @NoArgsConstructor
-@RequiredArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "actors")
 @ToString(exclude = "actors")

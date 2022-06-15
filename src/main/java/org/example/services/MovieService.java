@@ -1,5 +1,6 @@
 package org.example.services;
 
+import lombok.extern.java.Log;
 import org.example.dao.MovieI;
 import org.example.models.Movie;
 import org.example.util.HibernateUtil;
@@ -10,7 +11,7 @@ import org.hibernate.Transaction;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-
+@Log
 public class MovieService implements MovieI {
     @Override
     public Movie createMovie(Movie m) {

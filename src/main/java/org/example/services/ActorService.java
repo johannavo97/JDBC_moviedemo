@@ -1,5 +1,6 @@
 package org.example.services;
 
+import lombok.extern.java.Log;
 import org.example.dao.ActorI;
 import org.example.models.Actor;
 import org.example.util.HibernateUtil;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+@Log
 public class ActorService implements ActorI {
     @Override
     public Actor save(Actor a) {

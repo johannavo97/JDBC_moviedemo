@@ -1,87 +1,33 @@
 package org.example;
 
-import java.sql.*;
+import lombok.extern.java.Log;
+import org.example.models.Actor;
+import org.example.models.Genre;
+import org.example.models.Movie;
+import org.example.services.ActorService;
+import org.example.services.GenreService;
+import org.example.services.MovieService;
 
+import java.sql.*;
+import java.util.List;
+
+@Log
 public class App
 {
-    static final String DB_URL = "jdbc:mariadb://localhost:3306/jdbcmoviedemo?createDatabaseIfNotExist=true";
-    static final String USER = "root";
-    static final String PASS = "root";
-    public static void main( String[] args )throws ClassNotFoundException {
+    public static void main(String[] args) {
+        ActorService actorService = new ActorService();
+        GenreService genreService = new GenreService();
+        MovieService movieService = new MovieService();
 
-        ResultSet rs = null;
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS)) {
+        Actor actor1 = actorService.save(new Actor("Betty", "White", 1922));
+        actorService.save(new Actor("Tia", "Carre", 1967));
+        actorService.save(new Actor("Liza", "Minnelli", 1946));
 
-            //Drop table MOVIES if exists
-            try (Statement deleteS = conn.createStatement()) {
-                deleteS.executeUpdate("DROP TABLE IF EXISTS MOVIES");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
+        Genre genre1 = genreService.createGenre(new Genre(null,"Action", null));
+        Movie m1 = new Movie(null,"Predator", genre1, 1980, List.of(actor1));
 
-            //Create table MOVIES if not exists
-            try (Statement CreateS = conn.createStatement()) {
-                String sql = "create table if not exists MOVIES (" +
-                        "                          id int auto_increment primary key," +
-                        "                          title varchar(255) not null," +
-                        "                          genre varchar(255) not null," +
-                        "                          yearOfRelease INTEGER" +
-                        ")";
-                CreateS.execute(sql);
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
 
-            //Insert three records
-            try (Statement InsertS = conn.createStatement()) {
-                InsertS.executeUpdate("insert into MOVIES (title, genre, yearOfRelease) values('Memory', 'Action', 2022)");
-                InsertS.executeUpdate("insert into MOVIES (title, genre, yearOfRelease) values('Minions', 'Comedy', 2015)");
-                InsertS.executeUpdate("insert into MOVIES (title, genre, yearOfRelease) values('Men', 'Horror', 2022)");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            //Update records
-            try (PreparedStatement ps = conn.prepareStatement("UPDATE MOVIES SET title = ? WHERE id = ?")) {
-                ps.setString(1, "Morbius");
-                ps.setInt(2, 1);
-                ps.executeUpdate();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            //Delete a specified record by id
-            try (Statement deS = conn.createStatement()) {
-                deS.execute("DELETE FROM MOVIES WHERE id = 3");
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-
-            //Display records
-            try (Statement displayS = conn.createStatement()) {
-                rs = displayS.executeQuery("SELECT * FROM MOVIES");
-
-                System.out.printf("%-4s %-15s %-15s %-10s%n",
-                        "ID",
-                        "Title",
-                        "Genre",
-                        "Year of release"
-                );
-                System.out.println("--------------------------------------------");
-                while (rs.next()) {
-                    System.out.printf("%-4d %-15s %-15s %-10d%n",
-                            rs.getInt(1),
-                            rs.getString(2),
-                            rs.getString(3),
-                            rs.getInt(4)
-                    );
-                    System.out.println();
-                }
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        log.info("Size Actors: " + actorService.findAllBornAfter(1922).toString());
+        log.info("Information of Predator" + movieService.findAllByTitle("Predator").toString());
     }
 }

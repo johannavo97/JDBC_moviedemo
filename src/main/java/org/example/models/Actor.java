@@ -10,6 +10,7 @@ import java.util.UUID;
 @Entity(name = "actors")
 @Data
 @NoArgsConstructor
+@RequiredArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode(exclude = "movies")
 @ToString(exclude = "movies")
@@ -18,11 +19,14 @@ public class Actor {
     @GeneratedValue
     private UUID id;
 
+    @NonNull
     private String name;
 
+    @NonNull
     @Column(name = "last_name")
     private String lastName;
 
+    @NonNull
     @Column(name = "year_of_birth")
     private int yearOfBirth;
 
